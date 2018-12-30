@@ -17,7 +17,7 @@ func Init() {
 	logfilepath := fmt.Sprintf(`{"filename":"%s"}`, "./log/srlive.log")
 
 	SetLogger("file", logfilepath)
-	SetLevel(7)
+	SetLevel(LevelDebug)
 
 	logs.SetLogger("console")
 }

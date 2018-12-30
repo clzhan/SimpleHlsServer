@@ -5,11 +5,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"runtime"
+
+	"github.com/clzhan/SimpleHlsServer/conf"
 	"github.com/clzhan/SimpleHlsServer/httpserver"
 	"github.com/clzhan/SimpleHlsServer/log"
-	"github.com/clzhan/SimpleHlsServer/utils"
-	"github.com/clzhan/SimpleHlsServer/conf"
 )
+
+var ostype = runtime.GOOS
 
 //远程获取pprof数据
 func InitPprof() {
@@ -21,7 +24,7 @@ func InitPprof() {
 
 	go func() {
 		//http://10.10.6.162:6399/debug/pprof
-		pprofAddress := util.GetLocalIp()
+		pprofAddress := conf.AppConf.IPlocal
 		pprofAddress += ":"
 		pprofAddress += strconv.Itoa(6399)
 
@@ -34,7 +37,7 @@ func startHttpServer() error {
 	var httpServerListen net.Listener
 	var err error
 
-	HttpFlsAddress := util.GetLocalIp()
+	HttpFlsAddress := conf.AppConf.IPlocal
 	HttpFlsAddress += ":"
 	HttpFlsAddress += conf.AppConf.WebPort
 
@@ -58,8 +61,11 @@ func startHttpServer() error {
 	return err
 }
 
-
 func main() {
+
+	if ostype == "darwin" {
+		//daemon(1, 0)
+	}
 
 	conf.Init()
 	log.Init()
@@ -67,7 +73,7 @@ func main() {
 	InitPprof()
 
 	err := startHttpServer()
-	if err != nil{
+	if err != nil {
 		log.Info("ListenAndServerHttpServer error :", err)
 	}
 
@@ -76,5 +82,4 @@ func main() {
 	log.Info("Start http Server.....")
 	// do event loop
 	select {}
-
 }
