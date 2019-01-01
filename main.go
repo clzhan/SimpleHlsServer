@@ -10,6 +10,7 @@ import (
 	"github.com/clzhan/SimpleHlsServer/conf"
 	"github.com/clzhan/SimpleHlsServer/httpserver"
 	"github.com/clzhan/SimpleHlsServer/log"
+	_ "github.com/tim1020/godaemon"
 )
 
 var ostype = runtime.GOOS
