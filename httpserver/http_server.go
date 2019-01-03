@@ -101,7 +101,7 @@ func (server *HttpServer) handleConn(w http.ResponseWriter, r *http.Request) {
 	case ".ts":
 		log.Info("r.URL.Path..",r.URL.Path);
 		path := strings.TrimSuffix(strings.TrimLeft(r.URL.Path, "/"), ".ts")
-		paths := strings.SplitN(path, "_", 2)
+		paths := strings.SplitN(path, "#", 2)
 		log.Info("ts path:", path, "SplitN paths:", paths)
 
 
