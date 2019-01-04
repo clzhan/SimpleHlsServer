@@ -101,16 +101,19 @@ func (server *HttpServer) handleConn(w http.ResponseWriter, r *http.Request) {
 	case ".ts":
 		log.Info("r.URL.Path..",r.URL.Path);
 		path := strings.TrimSuffix(strings.TrimLeft(r.URL.Path, "/"), ".ts")
-		paths := strings.SplitN(path, "#", 2)
-		log.Info("ts path:", path, "SplitN paths:", paths)
 
+		//paths := strings.SplitN(path, "_", 2)
+		//log.Info("ts path:", path, "SplitN paths:", paths)
+
+		index:=strings.LastIndexAny(path,"_")
+		path_tslujing := path[0:index]
 
 		//log.Info("ts name....", path)
 		var ts string
 		if ostype == "windows"{
-			ts = util.GetProjectPath() + "\\" + "www"+"\\"+ paths[0] + "\\" + path + ".ts"
+			ts = util.GetProjectPath() + "\\" + "www"+"\\"+ path_tslujing + "\\" + path + ".ts"
 		}else{
-			ts = util.GetProjectPath() + "/" + "www"+"/"+ paths[0] +  "/" + path + ".ts"
+			ts = util.GetProjectPath() + "/" + "www"+"/"+ path_tslujing +  "/" + path + ".ts"
 		}
 		if data, err := loadFile(ts); nil == err {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
