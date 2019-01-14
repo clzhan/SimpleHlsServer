@@ -4,9 +4,13 @@ import (
 	"fmt"
 	"strings"
 
+	"runtime"
 
 	"github.com/astaxie/beego/logs"
+	util "github.com/clzhan/SimpleHlsServer/utils"
 )
+
+var ostype = runtime.GOOS
 
 func Init() {
 	//if conf.AppConf.LogLvl == 7 {
@@ -14,9 +18,17 @@ func Init() {
 	//}
 	SetLogFuncCall(true)
 
-	logfilepath := fmt.Sprintf(`{"filename":"%s"}`, "./log/srlive.log")
+	var logfilepath string
+	//logfilepath := fmt.Sprintf(`{"filename":"%s"}`, "./logs/srlive.log")
+
+	if ostype == "windows" {
+		logfilepath = util.GetProjectPath() + "\\" + "logs\\srlive.log"
+	} else {
+		logfilepath = util.GetProjectPath() + "/" + "logs/srlive.log"
+	}
 
 	SetLogger("file", logfilepath)
+	
 	SetLevel(LevelDebug)
 
 	logs.SetLogger("console")
