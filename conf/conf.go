@@ -35,7 +35,7 @@ func Init() {
 		os.Exit(1)
 	}
 
-	AppConf.IPlocal, err = config.ReadKeyValue("MediaSever", "IP")
+	AppConf.IPlocal, err = config.ReadKeyValue("MediaSever", "TcpServer")
 	if err != nil {
 		fmt.Printf("%v", err)
 		os.Exit(1)
