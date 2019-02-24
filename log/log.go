@@ -5,9 +5,8 @@ import (
 	"strings"
 
 	"runtime"
-
+	"github.com/clzhan/SimpleHlsServer/conf"
 	"github.com/astaxie/beego/logs"
-	util "github.com/clzhan/SimpleHlsServer/utils"
 )
 
 var ostype = runtime.GOOS
@@ -18,18 +17,31 @@ func Init() {
 	//}
 	SetLogFuncCall(true)
 
-	var logfilepath string
 	//logfilepath := fmt.Sprintf(`{"filename":"%s"}`, "./logs/srlive.log")
 
-	if ostype == "windows" {
-		logfilepath = util.GetProjectPath() + "\\" + "logs\\srlive.log"
-	} else {
-		logfilepath = util.GetProjectPath() + "/" + "logs/srlive.log"
+	//var logfilepathtmp1 string
+	//var logfilepathtmp2 string
+	//if ostype == "windows" {
+	//	logfilepathtmp1 = util.GetProjectPath() + "\\" + "logs\\srlive.log"
+	//} else {
+	//	logfilepathtmp1 = util.GetProjectPath() + "/" + "logs/srlive.log"
+	//}
+	//logfilepathtmp1 = strings.Replace(logfilepathtmp1, "\\", "/", -1)
+	//
+	//logfilepathtmp2, _ = filepath.Abs(logfilepathtmp1)
+	//
+	//logfilepath := fmt.Sprintf(`{"filename":"%s"}`, logfilepathtmp2)
+
+	logfilepath := fmt.Sprintf(`{"filename":"%s"}`, "logs/srlive.log")
+	SetLogger("file", logfilepath)
+
+	if conf.AppConf.Loglevel > 0 {
+		SetLevel(LevelInformational)
+	}else{
+		SetLevel(LevelDebug)
 	}
 
-	SetLogger("file", logfilepath)
-	
-	SetLevel(LevelDebug)
+
 
 	logs.SetLogger("console")
 }

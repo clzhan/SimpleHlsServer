@@ -58,7 +58,6 @@ func (server *HttpServer) handleConn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	switch path.Ext(r.URL.Path) {
 	case ".m3u8":
 		url := r.URL.String()
@@ -75,15 +74,14 @@ func (server *HttpServer) handleConn(w http.ResponseWriter, r *http.Request) {
 		//}
 		var m3u8 string
 
-
-		if ostype == "windows"{
-			m3u8 = util.GetProjectPath() + "\\" + "www"+"\\"+ paths[0] +"\\"+ paths[0] +".m3u8"
-		}else{
-			m3u8 = util.GetProjectPath() + "/" + "www"+"/"+ paths[0] +"/"+ paths[0] +".m3u8"
+		if ostype == "windows" {
+			m3u8 = util.GetProjectPath() + "\\" + "www" + "\\" + paths[0] + "\\" + paths[0] + ".m3u8"
+		} else {
+			m3u8 = util.GetProjectPath() + "/" + "www" + "/" + paths[0] + "/" + paths[0] + ".m3u8"
 		}
 
 		if data, err := loadFile(m3u8); nil == err {
-			log.Info("Send m3u8 path：",m3u8);
+			log.Info("Send m3u8 path：", m3u8)
 
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.Header().Set("Cache-Control", "no-cache")
@@ -92,28 +90,28 @@ func (server *HttpServer) handleConn(w http.ResponseWriter, r *http.Request) {
 			if _, err = w.Write(data); err != nil {
 				log.Error("write m3u8 file err=", err)
 			}
-		}else{
-			log.Info("m3u8  path.......not found...");
+		} else {
+			log.Info("m3u8  path.......not found...")
 			http.NotFound(w, r)
 			//http.Error(w, err.Error(), http.StatusBadRequest)
 		}
 
 	case ".ts":
-		log.Info("r.URL.Path..",r.URL.Path);
+		log.Info("r.URL.Path..", r.URL.Path)
 		path := strings.TrimSuffix(strings.TrimLeft(r.URL.Path, "/"), ".ts")
 
 		//paths := strings.SplitN(path, "_", 2)
 		//log.Info("ts path:", path, "SplitN paths:", paths)
 
-		index:=strings.LastIndexAny(path,"_")
+		index := strings.LastIndexAny(path, "_")
 		path_tslujing := path[0:index]
 
 		//log.Info("ts name....", path)
 		var ts string
-		if ostype == "windows"{
-			ts = util.GetProjectPath() + "\\" + "www"+"\\"+ path_tslujing + "\\" + path + ".ts"
-		}else{
-			ts = util.GetProjectPath() + "/" + "www"+"/"+ path_tslujing +  "/" + path + ".ts"
+		if ostype == "windows" {
+			ts = util.GetProjectPath() + "\\" + "www" + "\\" + path_tslujing + "\\" + path + ".ts"
+		} else {
+			ts = util.GetProjectPath() + "/" + "www" + "/" + path_tslujing + "/" + path + ".ts"
 		}
 		if data, err := loadFile(ts); nil == err {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -122,7 +120,7 @@ func (server *HttpServer) handleConn(w http.ResponseWriter, r *http.Request) {
 			if _, err = w.Write(data); err != nil {
 				log.Error("write ts file err=", err)
 			}
-		}else{
+		} else {
 			log.Error("app.......ts..... not found")
 			http.NotFound(w, r)
 		}
@@ -146,7 +144,6 @@ func parseTsFile(p string) (app string, tsFile string) {
 
 	return
 }
-
 
 func loadFile(filename string) (data []byte, err error) {
 	defer func() {

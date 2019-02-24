@@ -1,11 +1,11 @@
 package util
 
 import (
+	"bytes"
+	"fmt"
+	"net"
 	"os"
 	"runtime"
-	"bytes"
-	"net"
-	"fmt"
 )
 
 var LittleEndian littleEndian
@@ -199,7 +199,7 @@ func GetUev(buff []byte, start int) (value int, pos int) {
 	return (1 << nZeroNum) - 1 + dwRet, start
 }
 
-func GetProjectPath() string{
+func GetProjectPath() string {
 	var projectPath string
 	projectPath, _ = os.Getwd()
 	return projectPath
@@ -252,7 +252,6 @@ func GetLocalIp() string {
 	defer conn.Close()
 
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
-
 
 	return localAddr.IP.String()
 }
